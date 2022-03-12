@@ -1,0 +1,1 @@
+# ajustes-de-curvas
