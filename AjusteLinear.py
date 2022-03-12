@@ -1,9 +1,19 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 n=6
 x=[1, 3, 5, 10, 15, 25]
 y=[(4.049*0.01), (2.604*0.01), (1.912*0.01), (1.142*0.01), (0.741*0.01), (0.521*0.01)]
 yA = []
+
+def plot():
+	plt.plot(x, y, color="green")
+	plt.plot(x, yA, color="red")
+	plt.xlim(1, 25)
+	plt.xticks(np.linspace(1, 25, 20, endpoint=True))
+	plt.ylim(24.7, 191.9)
+	plt.yticks(np.linspace(24.7, 191.9, 20, endpoint=True))
+	plt.show()
 
 def calculaYAjustado():
 	# print(a1)
@@ -11,20 +21,28 @@ def calculaYAjustado():
 	for i in range(n):
 		# print(x[i])
 		# print(a0 / (1+(a1*a0*x[i])))
-		yA.append(a0 / (1+(a1*a0*x[i])))
+		yA.append(a0 / (1+a1*a0*x[i]))
 
 def somatorioQuadrado(vetor):
 	soma = 0
 	for i in vetor:
 		soma += i*i
 
-	# print("Somatório Quadrado = " + str(soma))
+	print("Somatório Quadrado de Y = " + str(soma))
 	return soma
 
 def somatorio(vetor):
 	soma = 0
 	for i in vetor:
 		soma += i
+
+	# print("Somatório = " + str(soma))
+	return soma
+
+def somatorioB(vetor):
+	soma = 0
+	for i in vetor:
+		soma += 1/i
 
 	# print("Somatório = " + str(soma))
 	return soma
@@ -37,53 +55,73 @@ def somatorioXY(vetorX, vetorY):
 	# print("Somatório XY= " + str(soma))
 	return soma
 
+def somatorioXYB(vetorX, vetorY):
+	soma = 0
+	for i in range(0, n):
+		soma += vetorX[i] * 1/vetorY[i]
+
+	# print("Somatório XY= " + str(soma))
+	return soma
+
 def somatorio_y_ya():
 	soma = 0
 	for i in range(n):
+		print(y[i])
+		print(yA[i])
 		# print((y[i] - yA[i])*(y[i] - yA[i]))
 		soma += (y[i] - yA[i])*(y[i] - yA[i])
 
+	print("Somatório de y - ya = " + str(soma))
 	return soma
 
 matrizA = np.array([[somatorioQuadrado(x), somatorio(x)], # som(x)^2 som(x)
 					[somatorio(x), n]])					  # som(x)   n
-matrizB = np.array([[somatorioXY(x, y)], #som(x*y)
-					[somatorio(y)]])	 #som(y)
+matrizB = np.array([[somatorioXYB(x, y)], #som(x*y)
+					[somatorioB(y)]])	 #som(y)
 
-print("Matriz A")
-print(matrizA)
+multATeA = np.dot(matrizA.T, matrizA)
+print("Matriz AT * Matriz A")
+print(multATeA)
 print()
-# print()
-# print(matrizA.T)
-# print()print("Matriz A")
-print("Matriz B")
-print(matrizB)
+multATeB = np.dot(matrizA.T, matrizB)
+print("Matriz AT * Matriz B")
+print(multATeB)
 print()
-
-print("Matriz A Transposta")
-print(matrizA.T)
+invMultATeA = np.linalg.inv(multATeA)
+print("Inversa de AT * A")
+print(invMultATeA)
 print()
-
-print("Inversa da multiplicação")
-print(np.linalg.inv(np.dot(matrizA.T, matrizA)))
+X = np.dot(invMultATeA, multATeB) #X=inv(A'*A)*(A'*B)
+print("X = ")
+# print(X)
 print()
-X = np.dot(np.linalg.inv(np.dot(matrizA.T, matrizA)), (np.dot(matrizA.T, matrizB))) #X=inv(A'*A)*(A'*B)
+print()
 
 print(X[0])
-print(X[1])
+print(1/X[1])
 # print(X[1])
 # print(1/x[1])
 a1 = float(X[0])
-a0 = 1/x[1]
-# print()
-# print()
+a0 = float(1/X[1])
+print(a1)
+print(a0)
 
 calculaYAjustado()
+print("Vetor do Y Ajustado")
+print(yA)
+print()
 # print(yA)
 
-# print(X)
-R2 = 1 - ( (n * somatorio_y_ya()) / ( n * (somatorioQuadrado(y) - (somatorio(y) * somatorio(y))) ) )
-print(n * somatorio_y_ya())
-print(n * somatorioQuadrado(y))
-print(somatorio(y) * somatorio(y))
+somatorioY_YA = somatorio_y_ya()
+somatorioY2 = somatorioQuadrado(y)
+somatorio2Y = somatorio(y) * somatorio(y) # 1 - (3,6109604351 / 0,005343)
+print("S1 = " + str(somatorioY_YA))
+print("S2 = " + str(somatorioY2))
+print("S3 = " + str(somatorio2Y))
+R2 = 1 - ( (n * somatorioY_YA) / ( (n * (somatorioY2 - somatorio2Y)) ) )
+# R2 = R2 / 100
+# print(n * somatorio_y_ya())
+# print(n * somatorioQuadrado(y))
+# print(somatorio(y) * somatorio(y))
 print("R2 = " + str(R2))
+plot()
