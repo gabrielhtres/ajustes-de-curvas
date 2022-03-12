@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 n=6
 x=[1, 3, 5, 10, 15, 25]
@@ -107,9 +108,9 @@ a0 = float(1/X[1])
 print()
 print()
 print()
-print("a1 = " + str(a1))
+print("a1 = " + str(round(a1, 4)))
 # print("a0 = " + str("{:.4}".format(a0)))
-print("a0 = " + str(a0))
+print("a0 = " + str(round(a0, 4)))
 
 calculaYAjustado()
 # print("Vetor do Y Ajustado")
@@ -120,23 +121,23 @@ calculaYAjustado()
 somatorioY_YA = somatorio_y_ya()
 somatorioY2 = somatorioQuadrado(y)
 somatorio2Y = somatorio(y) * somatorio(y) # 1 - (3,6109604351 / 0,005343)
-print("S1 = " + str(somatorioY_YA))
-print("S2 = " + str(somatorioY2))
-print("S3 = " + str(somatorio2Y))
+# print("S1 = " + str(somatorioY_YA))
+# print("S2 = " + str(somatorioY2))
+# print("S3 = " + str(somatorio2Y))
 R2 = 1 - ( (n * somatorioY_YA) / ( (n * somatorioY2 - somatorio2Y) ) )
 # R2 = R2 / 100
 # print(n * somatorio_y_ya())
 # print(n * somatorioQuadrado(y))
 # print(somatorio(y) * somatorio(y))
 # print("R2 = " + str("{:.4}".format(R2)))
-print("R2 = " + str(R2))
-print()
-print()
-print()
+print("R2 = " + str(round(R2, 4)))
+# print()
+# print()
+# print()
 
 # for i in range(n):
 # 	print(yA[i])
 
-for i in range(n):
-	print(y[i])
+# for i in range(n):
+# 	print(y[i])
 # plot()
