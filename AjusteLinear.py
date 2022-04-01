@@ -2,18 +2,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-n=6
-x=[1, 3, 5, 10, 15, 25]
-y=[(4.049*0.01), (2.604*0.01), (1.912*0.01), (1.142*0.01), (0.741*0.01), (0.521*0.01)]
+n=4
+x=[1.5, 2.0, 2.5, 3.0]
+y=[2.1*2.1, 3.2*3.2, 4.4*4.4, 5.8*5.8]
 yA = []
 
 def plot():
 	plt.plot(x, y, color="green")
 	plt.plot(x, yA, color="red")
-	plt.xlim(1, 25)
-	plt.xticks(np.linspace(1, 25, 20, endpoint=True))
-	plt.ylim(24.7, 191.9)
-	plt.yticks(np.linspace(24.7, 191.9, 20, endpoint=True))
+	plt.xlim(1.5, 3)
+	plt.xticks(np.linspace(1.5, 3, 10, endpoint=True))
+	plt.ylim(1.5, 6)
+	plt.yticks(np.linspace(1.5, 6,10, endpoint=True))
 	plt.show()
 
 def calculaYAjustado():
@@ -22,7 +22,8 @@ def calculaYAjustado():
 	for i in range(n):
 		# print(x[i])
 		# print(a0 / (1+(a1*a0*x[i])))
-		yA.append(a0 / (1+a1*a0*x[i]))
+		# print(a0 * (math.e ** (-a1*x[i])))
+		yA.append(a1*x[i]+a0) 
 
 def somatorioQuadrado(vetor):
 	soma = 0
@@ -43,7 +44,7 @@ def somatorio(vetor):
 def somatorioB(vetor):
 	soma = 0
 	for i in vetor:
-		soma += 1/i
+		soma += np.log(i)
 
 	# print("Somatório = " + str(soma))
 	return soma
@@ -59,9 +60,9 @@ def somatorioXY(vetorX, vetorY):
 def somatorioXYB(vetorX, vetorY):
 	soma = 0
 	for i in range(0, n):
-		soma += vetorX[i] * 1/vetorY[i]
+		soma += vetorX[i] * np.log(vetorY[i])
 
-	# print("Somatório XY= " + str(soma))
+	print("Somatório XY= " + str(soma))
 	return soma
 
 def somatorio_y_ya():
@@ -97,13 +98,14 @@ X = np.dot(invMultATeA, multATeB) #X=inv(A'*A)*(A'*B)
 # print(X)
 # print()
 # print()
+print(X)
 
 # print(X[0])
 # print(1/X[1])
 # print(X[1])
 # print(1/x[1])
-a1 = float(X[0])
-a0 = float(1/X[1])
+a1 = X[0][0]
+a0 = X[1][0]
 # print("a1 = " + str("{:.4}".format(a1)))
 print()
 print()
@@ -113,6 +115,7 @@ print("a1 = " + str(round(a1, 4)))
 print("a0 = " + str(round(a0, 4)))
 
 calculaYAjustado()
+print(yA)
 # print("Vetor do Y Ajustado")
 # print(yA)
 # print()
@@ -140,4 +143,4 @@ print("R2 = " + str(round(R2, 4)))
 
 # for i in range(n):
 # 	print(y[i])
-# plot()
+plot()
